@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanReminder - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4">
+
+  <!-- Logo + Title -->
+  <div class="text-center mb-10">
+    <div class="mx-auto mb-4 w-14 h-14 flex items-center justify-center rounded-2xl bg-blue-600 shadow-md">
+      <!-- icon calendar -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    </div>
+
+    <h1 class="text-4xl font-bold text-slate-900">PlanReminder</h1>
+    <p class="mt-3 text-slate-600 max-w-lg mx-auto text-sm sm:text-base">
+      Aplikasi pengingat tugas otomatis untuk mahasiswa. Kelola deadline dengan mudah dan tidak akan pernah melewatkan tugas lagi!
+    </p>
+  </div>
+
+  <!-- Feature Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full mb-12">
+
+    <!-- Card 1 -->
+    <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 2a1 1 0 0 0-1 1v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1V3a1 1 0 1 0-2 0v1H8V3a1 1 0 0 0-1-1ZM5 6h14a1 1 0 0 1 1 1v3H4V7a1 1 0 0 1 1-1Z" />
+        </svg>
+      </div>
+      <h3 class="font-semibold text-slate-900">Organisasi Kartu</h3>
+      <p class="mt-2 text-sm text-slate-600">
+        Buat kartu untuk Mata Kuliah, Praktikum, dan kategori lainnya.
+      </p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1Zm1 11.59V7a1 1 0 1 0-2 0v6a1 1 0 0 0 .29.71l3 3a1 1 0 0 0 1.42-1.42Z" />
+        </svg>
+      </div>
+      <h3 class="font-semibold text-slate-900">Reminder Otomatis</h3>
+      <p class="mt-2 text-sm text-slate-600">
+        Sistem pengingat internal yang tidak bergantung pada Google Calendar.
+      </p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 2a1 1 0 0 0-1 1v1H7a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1V3a1 1 0 1 0-2 0v1h-4V3a1 1 0 0 0-1-1Z" />
+        </svg>
+      </div>
+      <h3 class="font-semibold text-slate-900">Upload File</h3>
+      <p class="mt-2 text-sm text-slate-600">
+        Attach file PDF, gambar, atau dokumen ke setiap tugas.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Login Box -->
+  <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-8 w-full max-w-md text-center">
+    <h2 class="text-xl font-bold text-slate-900">Mulai Sekarang</h2>
+    <p class="mt-2 text-sm text-slate-600">
+      Login dengan akun Google untuk mengakses aplikasi
+    </p>
+
+    <!-- ✅ Google button akan dirender oleh auth.js -->
+    <div id="googleBtn" class="flex justify-center mt-6"></div>
+
+    <p class="mt-4 text-xs text-slate-500">
+      Dengan login, kamu menyetujui <span class="underline">Terms of Service</span> dan <span class="underline">Privacy Policy</span>
+    </p>
+  </div>
+
+  <footer class="mt-10 text-sm text-slate-500 text-center">
+    © 2026 <b>PlanReminder</b> - Tugas Akhir Project
+  </footer>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- auth.js (module) -->
+  <script type="module" src="../js/auth.js"></script>
+
+</body>
+</html>

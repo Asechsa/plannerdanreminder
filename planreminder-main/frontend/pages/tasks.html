@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlanReminder - Tasks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- TOP BAR -->
+  <header class="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
+    <h1 class="text-lg font-bold">PlanReminder</h1>
+
+    <div class="flex items-center gap-4">
+      <button id="btnLogout" class="text-sm px-3 py-2 rounded-xl border hover:bg-slate-50">
+        Logout
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-sm font-semibold leading-tight">User</p>
+          <p class="text-xs text-slate-500" id="userEmail">-</p>
+        </div>
+        <img src="https://i.pravatar.cc/40" class="w-9 h-9 rounded-full" alt="user"/>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r min-h-[calc(100vh-56px)] p-6">
+      <h2 class="font-bold text-slate-800 mb-6">Statistics</h2>
+
+      <div class="space-y-4">
+        <div class="bg-slate-50 border rounded-2xl p-4">
+          <p class="text-sm text-slate-500">Total Tasks</p>
+          <p class="text-3xl font-bold text-blue-600 mt-1" id="statTotal">0</p>
+        </div>
+
+        <div class="bg-slate-50 border rounded-2xl p-4">
+          <p class="text-sm text-slate-500">Completed</p>
+          <p class="text-3xl font-bold text-green-600 mt-1" id="statCompleted">0</p>
+        </div>
+
+        <div class="bg-slate-50 border rounded-2xl p-4">
+          <p class="text-sm text-slate-500">Pending</p>
+          <p class="text-3xl font-bold text-orange-600 mt-1" id="statPending">0</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 p-10">
+
+      <!-- Back + Add -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-3">
+          <button id="btnBack" class="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-2">
+            ← Back
+          </button>
+        </div>
+
+        <button id="btnAddTask" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+          + Add Task
+        </button>
+      </div>
+
+      <!-- ACTIVE -->
+      <div class="mb-10">
+        <h3 class="font-bold text-slate-800 mb-4" id="activeTitle">Active Tasks (0)</h3>
+        <div id="activeList" class="space-y-4"></div>
+      </div>
+
+      <!-- COMPLETED -->
+      <div>
+        <h3 class="font-bold text-slate-800 mb-4" id="doneTitle">Completed (0)</h3>
+        <div id="doneList" class="space-y-4"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL ADD TASK -->
+  <div id="modalAdd" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Tambah Task</h3>
+      <p class="text-sm text-slate-500 mb-4">Isi judul & deadline task kamu</p>
+
+      <input id="addTitle" class="w-full border rounded-xl px-3 py-2 mb-3" placeholder="Judul task..." />
+      <input id="addDeadline" type="datetime-local" class="w-full border rounded-xl px-3 py-2 mb-4" />
+
+      <div class="flex justify-end gap-2">
+        <button id="btnCancelAdd" class="px-4 py-2 rounded-xl border">Cancel</button>
+        <button id="saveAddBtn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDIT TASK -->
+  <div id="modalEdit" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Edit Task</h3>
+      <p class="text-sm text-slate-500 mb-4">Ubah judul & deadline task</p>
+
+      <input id="editTitle" class="w-full border rounded-xl px-3 py-2 mb-3" placeholder="Judul task..." />
+      <input id="editDeadline" type="datetime-local" class="w-full border rounded-xl px-3 py-2 mb-4" />
+
+      <div class="flex justify-end gap-2">
+        <button id="btnCancelEdit" class="px-4 py-2 rounded-xl border">Cancel</button>
+        <button id="saveEditBtn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ JS module -->
+  <script type="module" src="../js/tasks.js"></script>
+
+</body>
+</html>

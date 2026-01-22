@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlanReminder - Main Cards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- TOP BAR -->
+  <header class="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
+    <h1 class="text-lg font-bold">PlanReminder</h1>
+
+    <div class="flex items-center gap-3">
+      <div class="text-right">
+        <p class="text-sm font-semibold leading-tight">User</p>
+        <p class="text-xs text-slate-500">dummy@email.com</p>
+      </div>
+      <img src="https://i.pravatar.cc/40" class="w-9 h-9 rounded-full" alt="user"/>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-6xl mx-auto px-6 py-8">
+
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold">Main Cards</h2>
+      <button id="btnAddCard" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+        + Add Card
+      </button>
+    </div>
+
+    <!-- GRID -->
+    <section id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- cards injected by JS -->
+    </section>
+  </main>
+
+  <!-- MODAL EDIT TITLE -->
+  <div id="modalEdit" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Edit Card</h3>
+      <p class="text-sm text-slate-500 mb-4">Ubah judul card kamu</p>
+
+      <input id="editTitleInput" class="w-full border rounded-xl px-3 py-2 mb-4" placeholder="Judul baru..." />
+
+      <div class="flex justify-end gap-2">
+        <button onclick="closeModal('modalEdit')" class="px-4 py-2 rounded-xl border">
+          Cancel
+        </button>
+        <button id="saveEditBtn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COLOR PICKER -->
+  <div id="modalColor" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Ubah Warna</h3>
+      <p class="text-sm text-slate-500 mb-4">Pilih warna untuk card ini</p>
+
+      <div class="flex flex-wrap gap-3 mb-4" id="colorOptions">
+        <!-- injected -->
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button onclick="closeModal('modalColor')" class="px-4 py-2 rounded-xl border">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // Dummy data (nanti ganti fetch API)
+    // ============================================
+    let cards = [
+      { id: "1", title: "ILAB", color: "#3B82F6", sub_count: 1, task_count: 5 },
+      { id: "2", title: "Mata Kuliah", color: "#3B82F6", sub_count: 3, task_count: 9 },
+      { id: "3", title: "Praktikum", color: "#8B5CF6", sub_count: 2, task_count: 0 },
+      { id: "4", title: "Praktikum Online", color: "#10B981", sub_count: 0, task_count: 0 }
+    ];
+
+    let selectedCardId = null;
+
+    const presetColors = [
+      "#3B82F6", "#8B5CF6", "#10B981", "#F97316",
+      "#EF4444", "#14B8A6", "#0EA5E9", "#64748B"
+    ];
+
+    // ============================================
+    // Render Cards
+    // ============================================
+    function renderCards() {
+      const grid = document.getElementById("cardsGrid");
+      grid.innerHTML = "";
+
+      cards.forEach(card => {
+        const el = document.createElement("div");
+        el.className = "relative rounded-2xl p-5 text-white shadow-md hover:shadow-lg transition cursor-pointer";
+        el.style.background = card.color;
+
+        el.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-bold text-lg">${card.title}</h3>
+              <p class="text-xs opacity-90 mt-2">${card.sub_count} Sub-cards • ${card.task_count} Tasks</p>
+            </div>
+
+            <!-- MENU BUTTON -->
+            <button class="menuBtn w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition" data-id="${card.id}">
+              ⋮
+            </button>
+          </div>
+
+          <!-- Dropdown menu -->
+          <div class="dropdown hidden absolute right-4 top-14 bg-white text-slate-800 rounded-xl shadow-lg w-40 overflow-hidden z-20" id="dropdown-${card.id}">
+            <button class="w-full text-left px-4 py-2 hover:bg-slate-100 text-sm" onclick="openEdit('${card.id}')">Edit Judul</button>
+            <button class="w-full text-left px-4 py-2 hover:bg-slate-100 text-sm" onclick="openColor('${card.id}')">Ubah Warna</button>
+            <button class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 text-sm" onclick="deleteCard('${card.id}')">Hapus</button>
+          </div>
+        `;
+
+        grid.appendChild(el);
+      });
+
+      // attach menu listeners
+      document.querySelectorAll(".menuBtn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          toggleDropdown(id);
+        });
+      });
+
+      // close dropdown when click outside
+      document.addEventListener("click", () => {
+        document.querySelectorAll(".dropdown").forEach(d => d.classList.add("hidden"));
+      });
+    }
+
+    function toggleDropdown(id) {
+      document.querySelectorAll(".dropdown").forEach(d => d.classList.add("hidden"));
+      const drop = document.getElementById("dropdown-" + id);
+      drop.classList.toggle("hidden");
+    }
+
+    // ============================================
+    // Edit Title Modal
+    // ============================================
+    function openEdit(id) {
+      selectedCardId = id;
+      const card = cards.find(c => c.id === id);
+      document.getElementById("editTitleInput").value = card.title;
+      openModal("modalEdit");
+    }
+
+    document.getElementById("saveEditBtn").addEventListener("click", () => {
+      const newTitle = document.getElementById("editTitleInput").value.trim();
+      if (!newTitle) return alert("Judul tidak boleh kosong!");
+
+      const card = cards.find(c => c.id === selectedCardId);
+      card.title = newTitle;
+
+      closeModal("modalEdit");
+      renderCards();
+
+      // TODO: call API update card
+      // apiUpdateCard(selectedCardId, { title: newTitle })
+    });
+
+    // ============================================
+    // Color Modal
+    // ============================================
+    function openColor(id) {
+      selectedCardId = id;
+      const container = document.getElementById("colorOptions");
+      container.innerHTML = "";
+
+      presetColors.forEach(color => {
+        const btn = document.createElement("button");
+        btn.className = "w-10 h-10 rounded-xl border-2 border-white shadow";
+        btn.style.background = color;
+        btn.onclick = () => setCardColor(color);
+        container.appendChild(btn);
+      });
+
+      openModal("modalColor");
+    }
+
+    function setCardColor(color) {
+      const card = cards.find(c => c.id === selectedCardId);
+      card.color = color;
+
+      closeModal("modalColor");
+      renderCards();
+
+      // TODO: call API update card
+      // apiUpdateCard(selectedCardId, { color })
+    }
+
+    // ============================================
+    // Delete Card
+    // ============================================
+    function deleteCard(id) {
+      if (!confirm("Yakin mau hapus card ini?")) return;
+      cards = cards.filter(c => c.id !== id);
+      renderCards();
+
+      // TODO: call API delete
+      // apiDeleteCard(id)
+    }
+
+    // ============================================
+    // Add Card
+    // ============================================
+    document.getElementById("btnAddCard").addEventListener("click", () => {
+      const title = prompt("Nama card baru?");
+      if (!title) return;
+
+      cards.push({
+        id: Date.now().toString(),
+        title,
+        color: "#3B82F6",
+        sub_count: 0,
+        task_count: 0
+      });
+
+      renderCards();
+
+      // TODO: call API create
+      // apiCreateCard({ title, color: "#3B82F6" })
+    });
+
+    // ============================================
+    // Modal Helpers
+    // ============================================
+    function openModal(id) {
+      const m = document.getElementById(id);
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    renderCards();
+  </script>
+
+</body>
+</html>

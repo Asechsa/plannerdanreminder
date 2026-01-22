@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlanReminder - Sub Cards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- TOP BAR -->
+  <header class="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
+    <h1 class="text-lg font-bold">PlanReminder</h1>
+
+    <div class="flex items-center gap-4">
+      <button id="btnLogout" class="text-sm px-3 py-2 rounded-xl border hover:bg-slate-50">
+        Logout
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <p class="text-sm font-semibold leading-tight">User</p>
+          <p class="text-xs text-slate-500" id="userEmail">-</p>
+        </div>
+        <img src="https://i.pravatar.cc/40" class="w-9 h-9 rounded-full" alt="user"/>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-6xl mx-auto px-6 py-8">
+
+    <!-- Title Row -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <button id="btnBack" class="text-sm text-slate-600 hover:text-slate-900 flex items-center gap-2">
+          ← Back
+        </button>
+        <h2 class="text-2xl font-bold mt-2" id="pageTitle">Sub Cards</h2>
+        <p class="text-slate-500 text-sm mt-1">Pilih sub-card untuk melihat task di dalamnya.</p>
+      </div>
+
+      <button id="btnAddSub" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+        + Add Sub Card
+      </button>
+    </div>
+
+    <!-- GRID -->
+    <section id="subGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      <!-- injected by sub_cards.js -->
+    </section>
+
+  </main>
+
+  <!-- MODAL EDIT TITLE -->
+  <div id="modalEdit" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Edit Sub Card</h3>
+      <p class="text-sm text-slate-500 mb-4">Ubah judul sub-card kamu</p>
+
+      <input id="editTitleInput" class="w-full border rounded-xl px-3 py-2 mb-4" placeholder="Judul baru..." />
+
+      <div class="flex justify-end gap-2">
+        <button id="btnCancelEdit" class="px-4 py-2 rounded-xl border">Cancel</button>
+        <button id="saveEditBtn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COLOR PICKER -->
+  <div id="modalColor" class="fixed inset-0 bg-black/30 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-2">Ubah Warna</h3>
+      <p class="text-sm text-slate-500 mb-4">Pilih warna untuk sub-card ini</p>
+
+      <div class="flex flex-wrap gap-3 mb-4" id="colorOptions">
+        <!-- injected by sub_cards.js -->
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button id="btnCancelColor" class="px-4 py-2 rounded-xl border">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ JS module -->
+  <script type="module" src="../js/sub_cards.js"></script>
+
+</body>
+</html>
